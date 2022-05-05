@@ -165,7 +165,7 @@ shotchart <- function(pid) {
   players <- data.frame(pids = c(1629630, 201565, 201566, 947),
                           names = c("Ja Morant", "Derrick Rose",
                           "Russell Westbrook", "Allen Iverson"))
-  name <- filter(players, pids == pid)$names
+  name <- filter(players, players$pids == pid)$names
   df <- read_feather(paste("./code/Rdata/", as.character(pid),
                            "_allshots.feather", sep = ""))
 

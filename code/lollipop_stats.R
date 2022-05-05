@@ -25,6 +25,9 @@ create_graph <- function(stat, tit, axis) {
                             sep = " "),
             caption = "Data from NBA.com",
             x = "Season", y = str_to_title(axis), color = "")
+
+    ggsave(paste("./images/", str_to_lower(axis), ".png", sep = ""),
+            device = "png", dpi = 800)
 }
 
-create_graph(stats$TOV, tit = "Points", axis = "Pts")
+create_graph(stats$DefRtg, tit = "Defensive Rating", axis = "DefRtg")
