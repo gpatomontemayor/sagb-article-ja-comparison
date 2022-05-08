@@ -192,7 +192,10 @@ shotchart <- function(pid) {
     theme(legend.title = element_blank(),
           axis.text = element_blank(),
           axis.title = element_blank(),
-          panel.grid.major = element_blank()
+          panel.grid.major = element_blank(),
+          legend.text = element_text(size = 15),
+          plot.title = element_text(size = 25),
+          plot.subtitle = element_text(size = 15)
     ) +
     labs(title = name,
         subtitle = "Shots from first three seasons",
@@ -203,4 +206,4 @@ shotchart <- function(pid) {
         units = "cm")
 }
 
-shotchart(pid = 947)
+shotchart(pid = 1629630)
