@@ -165,7 +165,7 @@ shotchart <- function(pid) {
   players <- data.frame(pids = c(1629630, 201565, 201566, 947),
                           names = c("Ja Morant", "Derrick Rose",
                           "Russell Westbrook", "Allen Iverson"))
-  name <- filter(players, pids == pid)$names
+  name <- filter(players, players$pids == pid)$names
   df <- read_feather(paste("./code/Rdata/", as.character(pid),
                            "_allshots.feather", sep = ""))
 
@@ -192,7 +192,10 @@ shotchart <- function(pid) {
     theme(legend.title = element_blank(),
           axis.text = element_blank(),
           axis.title = element_blank(),
-          panel.grid.major = element_blank()
+          panel.grid.major = element_blank(),
+          legend.text = element_text(size = 15),
+          plot.title = element_text(size = 25),
+          plot.subtitle = element_text(size = 15)
     ) +
     labs(title = name,
         subtitle = "Shots from first three seasons",
@@ -203,4 +206,4 @@ shotchart <- function(pid) {
         units = "cm")
 }
 
-shotchart(pid = 947)
+shotchart(pid = 1629630)
