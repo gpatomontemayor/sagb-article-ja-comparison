@@ -1,5 +1,4 @@
-# Most of the code is from @DSamangy and @Owenlhjphillips
-
+# Most of the code is from @DSamangy and @Owenlhjphillips on twitter
 library(tidyverse)
 library(ggplot2)
 library(arrow)
@@ -11,6 +10,7 @@ circle_points <- function(center = c(0, 0), radius = 1, npoints = 360) {
                     y = center[2] + radius * sin(angles)))
 }
 
+# Data for lines
 width <- 50
 height <- 94 / 2
 key_height <- 19
@@ -48,8 +48,8 @@ court_themes <- list(
     court = "white",
     lines = "black",
     text = "#F0F0F0",
-    made = "#cc3300",
-    missed = "#cc3300",
+    made = "#99cc33",
+    missed = "#ff9966",
     hex_border_size = 0,
     hex_color = "#000000"
   )
@@ -162,24 +162,25 @@ plot_court <- function(court_theme = court_themes$light,
 
 shotchart <- function(pid) {
   # Wrapper to create shot charts
-  players <- data.frame(pids = c(1629630, 201565, 201566, 947),
-                          names = c("Ja Morant", "Derrick Rose",
-                          "Russell Westbrook", "Allen Iverson"))
+  players <- data.frame(pids = c(1629630, 201565),
+                          names = c("Ja Morant", "Derrick Rose"))
   name <- filter(players, players$pids == pid)$names
   df <- read_feather(paste("./code/Rdata/", as.character(pid),
                            "_allshots.feather", sep = ""))
-
+  # Getting shot locations
   df$loc_x <- as.numeric(as.character(df$LOC_X))
   df$loc_y <- as.numeric(as.character(df$LOC_Y))
 
-  df <- df %>% filter(LOC_Y < 400) %>%
+  # Filtering for correct location
+  df <- df %>%
+        filter(LOC_Y < 400) %>%
         mutate(loc_x = as.numeric(as.character(loc_x)) / 10,
           loc_y = as.numeric(as.character(loc_y)) / 10 + hoop_center_y)
 
-
-
+  # Plot with desired theme
   p <- plot_court(court_theme = court_themes$fivethirtyeight) +
     theme_fivethirtyeight() +
+    # Only add geom_points, as ggplot() has already been called
     geom_point(data = df,
               mapping = aes(x = loc_x, y = loc_y, color = EVENT_TYPE,
                           fill = EVENT_TYPE), alpha = .2) +
@@ -187,8 +188,10 @@ shotchart <- function(pid) {
                       breaks = c("Made Shot", "Missed Shot")) +
     scale_color_manual(values = c("#339900", "#cc3300"),
                       breaks = c("Made Shot", "Missed Shot")) +
+    # Filter out undesired points
     scale_x_continuous(limits = c(-25, 25)) +
     scale_y_continuous(limits = c(0, 45)) +
+    # Add texts and formating to the plot
     theme(legend.title = element_blank(),
           axis.text = element_blank(),
           axis.title = element_blank(),
